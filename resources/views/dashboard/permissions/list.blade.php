@@ -136,6 +136,7 @@
                             </td>
                         </tr>
                         <!-- .modal -->
+                        @if(!in_array( $Permission->id, [1,2,3]))
                         <div id="p-{{ $Permission->id }}" class="modal fade" data-backdrop="true">
                             <div class="modal-dialog" id="animate">
                                 <div class="modal-content">
@@ -158,6 +159,7 @@
                                 </div><!-- /.modal-content -->
                             </div>
                         </div>
+                        @endif
                         <!-- / .modal -->
                     @endforeach
 

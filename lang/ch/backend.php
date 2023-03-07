@@ -420,7 +420,7 @@ return array(
     'relatedTopicsSelect' => 'Select Site Section To load Topics',
     'customFields' => 'Custom Fields',
     'customFieldsTitle' => 'Field Title',
-    'customFieldsType' => 'Field Type',
+    'customFieldsTypeldsType' => 'Field Type',
     'customFieldsStatus' => 'Field Status',
     'customFieldsNewField' => 'Add New Field',
     'customFieldsEditField' => 'Field Edit',

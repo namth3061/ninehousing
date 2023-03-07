@@ -402,7 +402,7 @@ class TopicsController extends Controller
                                             <i class=\"material-icons\">&#xe3c9;</i>
                                         </a>";
                 }
-                if (@Auth::user()->permissionsGroup->delete_status) {
+                if (@Auth::user()->permissionsGroup->delete_status && $webmasterId != 1 ) {
                     $edit_btn .= " <button type='button' class=\"btn btn-sm warning\" onclick=\"DeleteTopic('" . $Topic->id . "')\" data-toggle=\"tooltip\" data-original-title=\" " . __('backend.delete') . "\">
                                             <i class=\"material-icons\">&#xe872;</i>
                                         </button>";

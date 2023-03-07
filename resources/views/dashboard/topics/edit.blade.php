@@ -342,7 +342,7 @@ if ($WebmasterSection->$title_var != "") {
                                             class="col-sm-2 form-control-label">{!!  __('backend.topicName') !!} {!! @Helper::languageName($ActiveLanguage) !!}
                                         </label>
                                         <div class="col-sm-10">
-                                            {!! Form::text('title_'.@$ActiveLanguage->code,$Topics->{'title_'.@$ActiveLanguage->code}, array('placeholder' => '','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                                            {!! Form::text('title_'.@$ActiveLanguage->code,$Topics->{'title_'.@$ActiveLanguage->code}, array( $WebmasterSection->id == 1 ? "readonly" : '', 'placeholder' => '','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
                                         </div>
                                     </div>
                                 @endif
@@ -398,220 +398,6 @@ if ($WebmasterSection->$title_var != "") {
                                     @endif
                                 @endforeach
                             @endif
-                        @endif
-
-
-                        @if($WebmasterSection->type==2)
-                            <div class="form-group row">
-                                <label for="video_type"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoType') !!}</label>
-                                <div class="col-sm-10">
-                                    <div class="radio">
-                                        <label class="ui-check ui-check-md">
-                                            {!! Form::radio('video_type','0',($Topics->video_type==0) ? true : false, array('id' => 'video_type1','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="none";document.getElementById("youtube_link_div").style.display="none";document.getElementById("vimeo_link_div").style.display="none";document.getElementById("files_div").style.display="block";document.getElementById("youtube_link").value=""')) !!}
-                                            <i class="dark-white"></i>
-                                            {{ __('backend.bannerVideoType1') }}
-                                        </label>
-                                        &nbsp; &nbsp;
-                                        <label class="ui-check ui-check-md">
-                                            {!! Form::radio('video_type','1',($Topics->video_type==1) ? true : false, array('id' => 'video_type2','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="none";document.getElementById("youtube_link_div").style.display="block";document.getElementById("vimeo_link_div").style.display="none";document.getElementById("files_div").style.display="none";document.getElementById("youtube_link").value=""')) !!}
-                                            <i class="dark-white"></i>
-                                            {{ __('backend.bannerVideoType2') }}
-                                        </label>
-                                        &nbsp; &nbsp;
-                                        <label class="ui-check ui-check-md">
-                                            {!! Form::radio('video_type','2',($Topics->video_type==2) ? true : false, array('id' => 'video_type2','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="none";document.getElementById("vimeo_link_div").style.display="block";document.getElementById("youtube_link_div").style.display="none";document.getElementById("files_div").style.display="none";document.getElementById("vimeo_link").value=""')) !!}
-                                            <i class="dark-white"></i>
-                                            {{ __('backend.bannerVideoType3') }}
-                                        </label>
-                                        &nbsp; &nbsp;
-                                        <label class="ui-check ui-check-md">
-                                            {!! Form::radio('video_type','3',($Topics->video_type==3) ? true : false, array('id' => 'video_type3','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="block";document.getElementById("vimeo_link_div").style.display="none";document.getElementById("youtube_link_div").style.display="none";document.getElementById("files_div").style.display="none";document.getElementById("embed_link").value=""')) !!}
-                                            <i class="dark-white"></i>
-                                            Embed
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="files_div" style="display: {{ ($Topics->video_type ==0) ? "block" : "none" }}">
-                                <div class="form-group row">
-                                    <label for="video_file"
-                                           class="col-sm-2 form-control-label">{!!  __('backend.topicVideo') !!}</label>
-                                    <div class="col-sm-10">
-                                        @if($Topics->video_type==0 && $Topics->video_file!="")
-                                            <div class="box p-a-xs">
-
-                                                <video width="380" height="230" controls>
-                                                    <source src="{{ asset('uploads/topics/'.$Topics->video_file) }}"
-                                                            type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                                <br>
-                                                <a target="_blank"
-                                                   href="{{ asset('uploads/topics/'.$Topics->video_file) }}">
-                                                    {{ $Topics->video_file }} </a>
-                                            </div>
-                                        @endif
-                                        {!! Form::file('video_file', array('class' => 'form-control','id'=>'video_file','accept'=>'*')) !!}
-                                    </div>
-                                </div>
-
-                                <div class="form-group row m-t-md" style="margin-top: 0 !important;">
-                                    <div class="offset-sm-2 col-sm-10">
-                                        <small>
-                                            <i class="material-icons">&#xe8fd;</i>
-                                            {!!  __('backend.videoTypes') !!}
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row" id="youtube_link_div"
-                                 style="display: {{ ($Topics->video_type==1) ? "block" : "none" }}">
-                                <label for="youtube_link"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoUrl') !!}</label>
-                                <div class="col-sm-10">
-                                    {!! Form::text('youtube_link',$Topics->video_file, array('placeholder' => 'https://www.youtube.com/watch?v=JQs4QyKnYMQ','class' => 'form-control','id'=>'youtube_link', 'dir'=>'ltr')) !!}
-                                </div>
-                            </div>
-                            <div class="form-group row" id="vimeo_link_div"
-                                 style="display: {{ ($Topics->video_type ==2) ? "block" : "none" }}">
-                                <label for="youtube_link"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoUrl2') !!}</label>
-                                <div class="col-sm-10">
-                                    {!! Form::text('vimeo_link',$Topics->video_file, array('placeholder' => 'https://vimeo.com/131766159','class' => 'form-control','id'=>'vimeo_link', 'dir'=>'ltr')) !!}
-                                </div>
-                            </div>
-
-                            <div class="form-group row" id="embed_link_div"
-                                 style="display: {{ ($Topics->video_type ==3) ? "block" : "none" }}">
-                                <label for="embed_link"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoUrl2') !!}</label>
-                                <div class="col-sm-10">
-                                    {!! Form::textarea('embed_link',$Topics->video_file, array('placeholder' => '','class' => 'form-control','id'=>'embed_link', 'dir'=>'ltr','rows'=>'3')) !!}
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($WebmasterSection->type==3)
-                            <div class="form-group row">
-                                <label for="audio_file"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.topicAudio') !!}</label>
-                                <div class="col-sm-10">
-                                    @if($Topics->audio_file!="")
-                                        <div class="box p-a-xs">
-                                            <audio controls>
-                                                <source src="{{ asset('uploads/topics/'.$Topics->audio_file) }}"
-                                                        type="audio/mpeg">
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                            <br>
-                                            <a target="_blank"
-                                               href="{{ asset('uploads/topics/'.$Topics->audio_file) }}"> {{ $Topics->audio_file }} </a>
-                                        </div>
-                                    @endif
-                                    {!! Form::file('audio_file', array('class' => 'form-control','id'=>'audio_file','accept'=>'audio/*')) !!}
-                                </div>
-                            </div>
-
-                            <div class="form-group row m-t-md" style="margin-top: 0 !important;">
-                                <div class="offset-sm-2 col-sm-10">
-                                    <small>
-                                        <i class="material-icons">&#xe8fd;</i>
-                                        {!!  __('backend.audioTypes') !!}
-                                    </small>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($WebmasterSection->photo_status)
-                            <div class="form-group row">
-                                <label for="photo_file"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.topicPhoto') !!}</label>
-                                <div class="col-sm-10">
-                                    @if($Topics->photo_file!="")
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div id="topic_photo" class="col-sm-4 box p-a-xs">
-                                                    <a target="_blank"
-                                                       href="{{ asset('uploads/topics/'.$Topics->photo_file) }}"><img
-                                                            src="{{ asset('uploads/topics/'.$Topics->photo_file) }}"
-                                                            class="img-responsive">
-                                                        {{ $Topics->photo_file }}
-                                                    </a>
-                                                    <br>
-                                                    <a onclick="document.getElementById('topic_photo').style.display='none';document.getElementById('photo_delete').value='1';document.getElementById('undo').style.display='block';"
-                                                       class="btn btn-sm btn-default">{!!  __('backend.delete') !!}</a>
-                                                </div>
-                                                <div id="undo" class="col-sm-4 p-a-xs" style="display: none">
-                                                    <a onclick="document.getElementById('topic_photo').style.display='block';document.getElementById('photo_delete').value='0';document.getElementById('undo').style.display='none';">
-                                                        <i class="material-icons">
-                                                            &#xe166;</i> {!!  __('backend.undoDelete') !!}</a>
-                                                </div>
-
-                                                {!! Form::hidden('photo_delete','0', array('id'=>'photo_delete')) !!}
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    {!! Form::file('photo_file', array('class' => 'form-control','id'=>'photo_file','accept'=>'image/*')) !!}
-
-                                </div>
-                            </div>
-                            <div class="form-group row m-t-md" style="margin-top: 0 !important;">
-                                <div class="offset-sm-2 col-sm-10">
-                                    <small>
-                                        <i class="material-icons">&#xe8fd;</i>
-                                        {!!  __('backend.imagesTypes') !!}
-                                    </small>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($WebmasterSection->icon_status)
-                            <div class="form-group row">
-                                <label for="icon"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.sectionIcon') !!}</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group">
-                                        {!! Form::text('icon',$Topics->icon, array('placeholder' => '','class' => 'form-control icp icp-auto','id'=>'icon', 'data-placement'=>'bottomRight')) !!}
-                                        <span class="input-group-addon"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($WebmasterSection->attach_file_status)
-                            <div class="form-group row">
-                                <label for="attach_file"
-                                       class="col-sm-2 form-control-label">{!!  __('backend.topicAttach') !!}</label>
-                                <div class="col-sm-10">
-                                    @if($Topics->attach_file!="")
-                                        <div id="topic_attach" class="col-sm-4 box p-a-xs">
-                                            <a target="_blank"
-                                               href="{{ asset('uploads/topics/'.$Topics->attach_file) }}"> {{ $Topics->attach_file }} </a>
-                                            <br>
-                                            <a onclick="document.getElementById('topic_attach').style.display='none';document.getElementById('attach_delete').value='1';document.getElementById('undo2').style.display='block';"
-                                               class="btn btn-sm btn-default">{!!  __('backend.delete') !!}</a>
-                                        </div>
-                                        <div id="undo2" class="col-sm-4 p-a-xs" style="display: none">
-                                            <a onclick="document.getElementById('topic_attach').style.display='block';document.getElementById('attach_delete').value='0';document.getElementById('undo2').style.display='none';">
-                                                <i class="material-icons">
-                                                    &#xe166;</i> {!!  __('backend.undoDelete') !!}</a>
-                                        </div>
-                                        {!! Form::hidden('attach_delete','0', array('id'=>'attach_delete')) !!}
-                                    @endif
-                                    {!! Form::file('attach_file', array('class' => 'form-control','id'=>'attach_file')) !!}
-                                </div>
-                            </div>
-                            <div class="form-group row m-t-md" style="margin-top: 0 !important;">
-                                <div class="offset-sm-2 col-sm-10">
-                                    <small>
-                                        <i class="material-icons">&#xe8fd;</i>
-                                        {!!  __('backend.attachTypes') !!}
-                                    </small>
-                                </div>
-                            </div>
                         @endif
 
 
@@ -996,7 +782,7 @@ if ($WebmasterSection->$title_var != "") {
                         @endif
                         {{--End of -- Additional Feilds--}}
 
-                        @if($WebmasterSection->type ==0)
+                        @if($WebmasterSection->type ==0  && auth()->id() == 1)
                             <div class="form-group row">
                                 <label for="link_status"
                                        class="col-sm-2 form-control-label">{!!  __('backend.pageCustomForm') !!}</label>
@@ -1011,6 +797,220 @@ if ($WebmasterSection->$title_var != "") {
                                 </div>
                             </div>
                         @endif
+
+                        @if($WebmasterSection->type==2)
+                            <div class="form-group row">
+                                <label for="video_type"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoType') !!}</label>
+                                <div class="col-sm-10">
+                                    <div class="radio">
+                                        <label class="ui-check ui-check-md">
+                                            {!! Form::radio('video_type','0',($Topics->video_type==0) ? true : false, array('id' => 'video_type1','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="none";document.getElementById("youtube_link_div").style.display="none";document.getElementById("vimeo_link_div").style.display="none";document.getElementById("files_div").style.display="block";document.getElementById("youtube_link").value=""')) !!}
+                                            <i class="dark-white"></i>
+                                            {{ __('backend.bannerVideoType1') }}
+                                        </label>
+                                        &nbsp; &nbsp;
+                                        <label class="ui-check ui-check-md">
+                                            {!! Form::radio('video_type','1',($Topics->video_type==1) ? true : false, array('id' => 'video_type2','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="none";document.getElementById("youtube_link_div").style.display="block";document.getElementById("vimeo_link_div").style.display="none";document.getElementById("files_div").style.display="none";document.getElementById("youtube_link").value=""')) !!}
+                                            <i class="dark-white"></i>
+                                            {{ __('backend.bannerVideoType2') }}
+                                        </label>
+                                        &nbsp; &nbsp;
+                                        <label class="ui-check ui-check-md">
+                                            {!! Form::radio('video_type','2',($Topics->video_type==2) ? true : false, array('id' => 'video_type2','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="none";document.getElementById("vimeo_link_div").style.display="block";document.getElementById("youtube_link_div").style.display="none";document.getElementById("files_div").style.display="none";document.getElementById("vimeo_link").value=""')) !!}
+                                            <i class="dark-white"></i>
+                                            {{ __('backend.bannerVideoType3') }}
+                                        </label>
+                                        &nbsp; &nbsp;
+                                        <label class="ui-check ui-check-md">
+                                            {!! Form::radio('video_type','3',($Topics->video_type==3) ? true : false, array('id' => 'video_type3','class'=>'has-value','onclick'=>'document.getElementById("embed_link_div").style.display="block";document.getElementById("vimeo_link_div").style.display="none";document.getElementById("youtube_link_div").style.display="none";document.getElementById("files_div").style.display="none";document.getElementById("embed_link").value=""')) !!}
+                                            <i class="dark-white"></i>
+                                            Embed
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="files_div" style="display: {{ ($Topics->video_type ==0) ? "block" : "none" }}">
+                                <div class="form-group row">
+                                    <label for="video_file"
+                                           class="col-sm-2 form-control-label">{!!  __('backend.topicVideo') !!}</label>
+                                    <div class="col-sm-10">
+                                        @if($Topics->video_type==0 && $Topics->video_file!="")
+                                            <div class="box p-a-xs">
+
+                                                <video width="380" height="230" controls>
+                                                    <source src="{{ asset('uploads/topics/'.$Topics->video_file) }}"
+                                                            type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                                <br>
+                                                <a target="_blank"
+                                                   href="{{ asset('uploads/topics/'.$Topics->video_file) }}">
+                                                    {{ $Topics->video_file }} </a>
+                                            </div>
+                                        @endif
+                                        {!! Form::file('video_file', array('class' => 'form-control','id'=>'video_file','accept'=>'*')) !!}
+                                    </div>
+                                </div>
+
+                                <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                                    <div class="offset-sm-2 col-sm-10">
+                                        <small>
+                                            <i class="material-icons">&#xe8fd;</i>
+                                            {!!  __('backend.videoTypes') !!}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="youtube_link_div"
+                                 style="display: {{ ($Topics->video_type==1) ? "block" : "none" }}">
+                                <label for="youtube_link"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoUrl') !!}</label>
+                                <div class="col-sm-10">
+                                    {!! Form::text('youtube_link',$Topics->video_file, array('placeholder' => 'https://www.youtube.com/watch?v=JQs4QyKnYMQ','class' => 'form-control','id'=>'youtube_link', 'dir'=>'ltr')) !!}
+                                </div>
+                            </div>
+                            <div class="form-group row" id="vimeo_link_div"
+                                 style="display: {{ ($Topics->video_type ==2) ? "block" : "none" }}">
+                                <label for="youtube_link"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoUrl2') !!}</label>
+                                <div class="col-sm-10">
+                                    {!! Form::text('vimeo_link',$Topics->video_file, array('placeholder' => 'https://vimeo.com/131766159','class' => 'form-control','id'=>'vimeo_link', 'dir'=>'ltr')) !!}
+                                </div>
+                            </div>
+
+                            <div class="form-group row" id="embed_link_div"
+                                 style="display: {{ ($Topics->video_type ==3) ? "block" : "none" }}">
+                                <label for="embed_link"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.bannerVideoUrl2') !!}</label>
+                                <div class="col-sm-10">
+                                    {!! Form::textarea('embed_link',$Topics->video_file, array('placeholder' => '','class' => 'form-control','id'=>'embed_link', 'dir'=>'ltr','rows'=>'3')) !!}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($WebmasterSection->type==3)
+                            <div class="form-group row">
+                                <label for="audio_file"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.topicAudio') !!}</label>
+                                <div class="col-sm-10">
+                                    @if($Topics->audio_file!="")
+                                        <div class="box p-a-xs">
+                                            <audio controls>
+                                                <source src="{{ asset('uploads/topics/'.$Topics->audio_file) }}"
+                                                        type="audio/mpeg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            <br>
+                                            <a target="_blank"
+                                               href="{{ asset('uploads/topics/'.$Topics->audio_file) }}"> {{ $Topics->audio_file }} </a>
+                                        </div>
+                                    @endif
+                                    {!! Form::file('audio_file', array('class' => 'form-control','id'=>'audio_file','accept'=>'audio/*')) !!}
+                                </div>
+                            </div>
+
+                            <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <small>
+                                        <i class="material-icons">&#xe8fd;</i>
+                                        {!!  __('backend.audioTypes') !!}
+                                    </small>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($WebmasterSection->photo_status)
+                            <div class="form-group row">
+                                <label for="photo_file"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.topicPhoto') !!}</label>
+                                <div class="col-sm-10">
+                                    @if($Topics->photo_file!="")
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div id="topic_photo" class="col-sm-4 box p-a-xs">
+                                                    <a target="_blank"
+                                                       href="{{ asset('uploads/topics/'.$Topics->photo_file) }}"><img
+                                                            src="{{ asset('uploads/topics/'.$Topics->photo_file) }}"
+                                                            class="img-responsive">
+                                                        {{ $Topics->photo_file }}
+                                                    </a>
+                                                    <br>
+                                                    <a onclick="document.getElementById('topic_photo').style.display='none';document.getElementById('photo_delete').value='1';document.getElementById('undo').style.display='block';"
+                                                       class="btn btn-sm btn-default">{!!  __('backend.delete') !!}</a>
+                                                </div>
+                                                <div id="undo" class="col-sm-4 p-a-xs" style="display: none">
+                                                    <a onclick="document.getElementById('topic_photo').style.display='block';document.getElementById('photo_delete').value='0';document.getElementById('undo').style.display='none';">
+                                                        <i class="material-icons">
+                                                            &#xe166;</i> {!!  __('backend.undoDelete') !!}</a>
+                                                </div>
+
+                                                {!! Form::hidden('photo_delete','0', array('id'=>'photo_delete')) !!}
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    {!! Form::file('photo_file', array('class' => 'form-control','id'=>'photo_file','accept'=>'image/*')) !!}
+
+                                </div>
+                            </div>
+                            <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <small>
+                                        <i class="material-icons">&#xe8fd;</i>
+                                        {!!  __('backend.imagesTypes') !!}
+                                    </small>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($WebmasterSection->icon_status)
+                            <div class="form-group row">
+                                <label for="icon"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.sectionIcon') !!}</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        {!! Form::text('icon',$Topics->icon, array('placeholder' => '','class' => 'form-control icp icp-auto','id'=>'icon', 'data-placement'=>'bottomRight')) !!}
+                                        <span class="input-group-addon"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($WebmasterSection->attach_file_status)
+                            <div class="form-group row">
+                                <label for="attach_file"
+                                       class="col-sm-2 form-control-label">{!!  __('backend.topicAttach') !!}</label>
+                                <div class="col-sm-10">
+                                    @if($Topics->attach_file!="")
+                                        <div id="topic_attach" class="col-sm-4 box p-a-xs">
+                                            <a target="_blank"
+                                               href="{{ asset('uploads/topics/'.$Topics->attach_file) }}"> {{ $Topics->attach_file }} </a>
+                                            <br>
+                                            <a onclick="document.getElementById('topic_attach').style.display='none';document.getElementById('attach_delete').value='1';document.getElementById('undo2').style.display='block';"
+                                               class="btn btn-sm btn-default">{!!  __('backend.delete') !!}</a>
+                                        </div>
+                                        <div id="undo2" class="col-sm-4 p-a-xs" style="display: none">
+                                            <a onclick="document.getElementById('topic_attach').style.display='block';document.getElementById('attach_delete').value='0';document.getElementById('undo2').style.display='none';">
+                                                <i class="material-icons">
+                                                    &#xe166;</i> {!!  __('backend.undoDelete') !!}</a>
+                                        </div>
+                                        {!! Form::hidden('attach_delete','0', array('id'=>'attach_delete')) !!}
+                                    @endif
+                                    {!! Form::file('attach_file', array('class' => 'form-control','id'=>'attach_file')) !!}
+                                </div>
+                            </div>
+                            <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <small>
+                                        <i class="material-icons">&#xe8fd;</i>
+                                        {!!  __('backend.attachTypes') !!}
+                                    </small>
+                                </div>
+                            </div>
+                        @endif
+
 
                         @if(@Auth::user()->permissionsGroup->active_status)
                             @if($WebmasterSection->case_status)

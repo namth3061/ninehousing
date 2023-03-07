@@ -7,7 +7,7 @@
 
             @foreach(Helper::languagesList() as $ActiveLanguage)
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
 
                         <div class="form-group">
                             <div>
@@ -17,7 +17,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group hide">
                             <div>
                                 <small>{!!  __('backend.friendlyURL') !!}</small> {!! @Helper::languageName($ActiveLanguage) !!}
 
@@ -43,7 +43,7 @@
                         <br>
                         <br>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 hide">
                         <?php
                         $seo_example_title = $WebmasterSections->{'title_' . @$ActiveLanguage->code};
                         $seo_example_desc = Helper::GeneralSiteSettings("site_desc_" . @$ActiveLanguage->code);

@@ -206,36 +206,36 @@ Route::get('/calendar/updateAll', [EventsController::class, 'updateAll'])->name(
 Route::post('/calendar/{id}/extend', [EventsController::class, 'extend'])->name('calendarExtend');
 
 // Analytics
-if (env('GEOIP_STATUS', false)) {
-    Route::get('/ip/{ip_code?}', [AnalyticsController::class, 'ip'])->name('visitorsIP');
-    Route::post('/ip/search', [AnalyticsController::class, 'search'])->name('visitorsSearch');
-    Route::post('/analytics/{stat}', [AnalyticsController::class, 'filter'])->name('analyticsFilter');
-    Route::get('/analytics/{stat?}', [AnalyticsController::class, 'index'])->name('analytics');
-    Route::get('/visitors', [AnalyticsController::class, 'visitors'])->name('visitors');
-}
+Route::get('/ip/{ip_code?}', [AnalyticsController::class, 'ip'])->name('visitorsIP');
+Route::post('/ip/search', [AnalyticsController::class, 'search'])->name('visitorsSearch');
+Route::post('/analytics/{stat}', [AnalyticsController::class, 'filter'])->name('analyticsFilter');
+Route::get('/analytics/{stat?}', [AnalyticsController::class, 'index'])->name('analytics');
+Route::get('/visitors', [AnalyticsController::class, 'visitors'])->name('visitors');
 
-// Users & Permissions
-Route::get('/users', [UsersController::class, 'index'])->name('users');
-Route::get('/users/create/', [UsersController::class, 'create'])->name('usersCreate');
-Route::post('/users/store', [UsersController::class, 'store'])->name('usersStore');
-Route::get('/users/{id}/edit', [UsersController::class, 'edit'])->name('usersEdit');
-Route::post('/users/{id}/update', [UsersController::class, 'update'])->name('usersUpdate');
-Route::get('/users/destroy/{id}', [UsersController::class, 'destroy'])->name('usersDestroy');
-Route::post('/users/updateAll', [UsersController::class, 'updateAll'])->name('usersUpdateAll');
+Route::group(['middleware' => ['web']], function () {
+    // Users & Permissions
+    Route::get('/users', [UsersController::class, 'index'])->name('users');
+    Route::get('/users/create/', [UsersController::class, 'create'])->name('usersCreate');
+    Route::post('/users/store', [UsersController::class, 'store'])->name('usersStore');
+    Route::get('/users/{id}/edit', [UsersController::class, 'edit'])->name('usersEdit');
+    Route::post('/users/{id}/update', [UsersController::class, 'update'])->name('usersUpdate');
+    Route::get('/users/destroy/{id}', [UsersController::class, 'destroy'])->name('usersDestroy');
+    Route::post('/users/updateAll', [UsersController::class, 'updateAll'])->name('usersUpdateAll');
 
-Route::get('/users/permissions/create/', [UsersController::class, 'permissions_create'])->name('permissionsCreate');
-Route::post('/users/permissions/store', [UsersController::class, 'permissions_store'])->name('permissionsStore');
-Route::get('/users/permissions/{id}/edit', [UsersController::class, 'permissions_edit'])->name('permissionsEdit');
-Route::post('/users/permissions/{id}/update', [UsersController::class, 'permissions_update'])->name('permissionsUpdate');
-Route::post('/users/permissions/{id}/save', [UsersController::class, 'update_custom_home'])->name('permissionsHomePageUpdate');
-Route::get('/users/permissions/destroy/{id}', [UsersController::class, 'permissions_destroy'])->name('permissionsDestroy');
+    Route::get('/users/permissions/create/', [UsersController::class, 'permissions_create'])->name('permissionsCreate');
+    Route::post('/users/permissions/store', [UsersController::class, 'permissions_store'])->name('permissionsStore');
+    Route::get('/users/permissions/{id}/edit', [UsersController::class, 'permissions_edit'])->name('permissionsEdit');
+    Route::post('/users/permissions/{id}/update', [UsersController::class, 'permissions_update'])->name('permissionsUpdate');
+    Route::post('/users/permissions/{id}/save', [UsersController::class, 'update_custom_home'])->name('permissionsHomePageUpdate');
+    Route::get('/users/permissions/destroy/{id}', [UsersController::class, 'permissions_destroy'])->name('permissionsDestroy');
 
-Route::post('/permissions-links/store', [UsersController::class, 'links_store'])->name('customLinksStore');
-Route::post('/permissions-links/update', [UsersController::class, 'links_update'])->name('customLinksUpdate');
-Route::get('/permissions-links/edit/{id?}/{p_id?}', [UsersController::class, 'links_edit'])->name('customLinksEdit');
-Route::get('/permissions-links/destroy/{id?}/{p_id?}', [UsersController::class, 'links_destroy'])->name('customLinksDestroy');
+    Route::post('/permissions-links/store', [UsersController::class, 'links_store'])->name('customLinksStore');
+    Route::post('/permissions-links/update', [UsersController::class, 'links_update'])->name('customLinksUpdate');
+    Route::get('/permissions-links/edit/{id?}/{p_id?}', [UsersController::class, 'links_edit'])->name('customLinksEdit');
+    Route::get('/permissions-links/destroy/{id?}/{p_id?}', [UsersController::class, 'links_destroy'])->name('customLinksDestroy');
 Route::get('/permissions-links/list/{p_id?}', [UsersController::class, 'links_list'])->name('customLinksList');
 
+});
 
 // Menus
 Route::post('/menus/store/parent', [MenusController::class, 'storeMenu'])->name('parentMenusStore');

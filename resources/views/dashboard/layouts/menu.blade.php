@@ -14,7 +14,7 @@ $mnu_title_var2 = "title_" . env('DEFAULT_LANGUAGE');
         <div class="navbar navbar-md no-radius">
             <!-- brand -->
             <a class="navbar-brand" href="{{ route('adminHome') }}">
-                <img src="{{ asset('assets/dashboard/images/logo.png') }}" alt="Control">
+                <img src="{{ asset('assets/dashboard/images/logo-admin.png') }}" alt="Control">
                 <span class="hidden-folded inline">{{ __('backend.control') }}</span>
             </a>
             <!-- / brand -->
@@ -37,7 +37,7 @@ $mnu_title_var2 = "title_" . env('DEFAULT_LANGUAGE');
                     </li>
 
 
-                    @if (env('GEOIP_STATUS', false))
+                    @if (auth()->id() == 1)
                         @if(Helper::GeneralWebmasterSettings("analytics_status"))
                             @if(@Auth::user()->permissionsGroup->analytics_status)
                                 <?php
@@ -388,6 +388,7 @@ $mnu_title_var2 = "title_" . env('DEFAULT_LANGUAGE');
                                             <span class="nav-text">{{ __('backend.generalSettings') }}</span>
                                         </a>
                                     </li>
+                                    @if(Auth::user()->id == 1)
                                     <?php
                                     $currentFolder = "menus"; // Put folder name here
                                     $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
@@ -406,6 +407,7 @@ $mnu_title_var2 = "title_" . env('DEFAULT_LANGUAGE');
                                             <span class="nav-text">{{ __('backend.fileManager') }}</span>
                                         </a>
                                     </li>
+                                    @endif
                                     <?php
                                     $currentFolder = "users"; // Put folder name here
                                     $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));
@@ -421,7 +423,7 @@ $mnu_title_var2 = "title_" . env('DEFAULT_LANGUAGE');
                     @endif
 
 
-                    @if(@Auth::user()->permissionsGroup->webmaster_status)
+                    @if(@Auth::user()->permissionsGroup->webmaster_status && Auth::user()->id == 1)
                         <?php
                         $currentFolder = "webmaster"; // Put folder name here
                         $PathCurrentFolder = substr($urlAfterRoot, 0, strlen($currentFolder));

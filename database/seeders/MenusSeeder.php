@@ -150,7 +150,6 @@ class MenusSeeder extends Seeder
         $Menu->created_by = 1;
         $Menu->save();
 
-
         // Footer Menu Sub links
         // Home
         $Menu = new Menu();
@@ -242,5 +241,6 @@ class MenusSeeder extends Seeder
         $Menu->link = "contact";
         $Menu->created_by = 1;
         $Menu->save();
+        
     }
 }

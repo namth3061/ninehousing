@@ -7,7 +7,7 @@
                 @foreach(Helper::languagesList() as $ActiveLanguage)
                     @if($ActiveLanguage->box_status)
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="form-group">
                                     <div>
                                         <label>{!!  __('backend.topicSEOTitle') !!}</label> {!! @Helper::languageName($ActiveLanguage) !!}
@@ -15,7 +15,7 @@
                                         {!! Form::text('seo_title_'.@$ActiveLanguage->code,$Topics->{'seo_title_'.@$ActiveLanguage->code}, array('class' => 'form-control','id'=>'seo_title_'.@$ActiveLanguage->code,'maxlength'=>'65', 'dir'=>@$ActiveLanguage->direction)) !!}
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group hide">
                                     <div>
                                         <label>{!!  __('backend.friendlyURL') !!}</label> {!! @Helper::languageName($ActiveLanguage) !!}
 
@@ -41,7 +41,7 @@
                                 <br>
                                 <br>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 hide">
                                 <?php
                                 $seo_example_title = $Topics->{'title_' . @$ActiveLanguage->code};
                                 $seo_example_desc = Helper::GeneralSiteSettings("site_desc_" . @$ActiveLanguage->code);

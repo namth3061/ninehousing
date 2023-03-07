@@ -1,6 +1,8 @@
 <?php
 
 Route::get('/', 'APIsController@api')->name('apiURL');
+
+Route::get('/home/{lang?}', 'APIsController@home')->name('home_page');
 // general
 Route::get('/website/status', 'APIsController@website_status');
 Route::get('/website/info/{lang?}', 'APIsController@website_info');

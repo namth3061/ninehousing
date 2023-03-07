@@ -94,6 +94,48 @@ class TopicsSeeder extends Seeder
         $Topic->created_by = 1;
         $Topic->save();
 
+
+
+        // Why Choose Us
+        $Topic = new Topic();
+        $Topic->row_no = 5;
+        $Topic->webmaster_id = 1;
+
+        $Topic->title_en = "Why Choose Us";
+        $Topic->title_vi = "Why Choose Us";
+        $Topic->title_jp = "Why Choose Us";
+
+        $Topic->details_en = "It is a long established fact that a reader will be distracted by the readable content of a page.";
+        $Topic->details_vi = "It is a long established fact that a reader will be distracted by the readable content of a page.";
+        $Topic->details_jp = "It is a long established fact that a reader will be distracted by the readable content of a page.";
+
+        $Topic->date = date('Y-m-d');
+        $Topic->status = 1;
+        $Topic->visits = 0;
+        $Topic->section_id = 0;
+        $Topic->created_by = 1;
+        $Topic->save();
+
+        // Interactive Map
+        $Topic = new Topic();
+        $Topic->row_no = 5;
+        $Topic->webmaster_id = 1;
+
+        $Topic->title_en = "Interactive Map";
+        $Topic->title_vi = "Interactive Map";
+        $Topic->title_jp = "Interactive Map";
+
+        $Topic->details_en = "It is a long established fact that a reader will be distracted by the readable content of a page.";
+        $Topic->details_vi = "It is a long established fact that a reader will be distracted by the readable content of a page.";
+        $Topic->details_jp = "It is a long established fact that a reader will be distracted by the readable content of a page.";
+
+        $Topic->date = date('Y-m-d');
+        $Topic->status = 1;
+        $Topic->visits = 0;
+        $Topic->section_id = 0;
+        $Topic->created_by = 1;
+        $Topic->save();
+
         // home
 //         $Topic = new Topic();
 //         $Topic->row_no = 5;

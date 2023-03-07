@@ -310,57 +310,6 @@ if ($WebmasterSection->$title_var != "") {
                         </div>
                     </div>
                 @endif
-
-                @if($WebmasterSection->photo_status)
-                    <div class="form-group row">
-                        <label for="photo_file"
-                               class="col-sm-2 form-control-label">{!!  __('backend.topicPhoto') !!}</label>
-                        <div class="col-sm-10">
-                            {!! Form::file('photo_file', array('class' => 'form-control','id'=>'photo_file','accept'=>'image/*')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group row m-t-md" style="margin-top: 0 !important;">
-                        <div class="offset-sm-2 col-sm-10">
-                            <small>
-                                <i class="material-icons">&#xe8fd;</i>
-                                {!!  __('backend.imagesTypes') !!}
-                            </small>
-                        </div>
-                    </div>
-                @endif
-
-                @if($WebmasterSection->icon_status)
-                    <div class="form-group row">
-                        <label for="icon"
-                               class="col-sm-2 form-control-label">{!!  __('backend.sectionIcon') !!}</label>
-                        <div class="col-sm-10">
-                            <div class="input-group">
-                                {!! Form::text('icon','', array('placeholder' => '','class' => 'form-control icp icp-auto','id'=>'icon', 'data-placement'=>'bottomRight')) !!}
-                                <span class="input-group-addon"></span>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                @if($WebmasterSection->attach_file_status)
-                    <div class="form-group row">
-                        <label for="attach_file"
-                               class="col-sm-2 form-control-label">{!!  __('backend.topicAttach') !!}</label>
-                        <div class="col-sm-10">
-                            {!! Form::file('attach_file', array('class' => 'form-control','id'=>'attach_file')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group row m-t-md" style="margin-top: 0 !important;">
-                        <div class="offset-sm-2 col-sm-10">
-                            <small>
-                                <i class="material-icons">&#xe8fd;</i>
-                                {!!  __('backend.attachTypes') !!}
-                            </small>
-                        </div>
-                    </div>
-                @endif
-
-
                 {{--Additional Feilds--}}
                 @if(count($WebmasterSection->customFields) >0)
                     <?php
@@ -498,7 +447,8 @@ if ($WebmasterSection->$title_var != "") {
                                         {!! $cf_land_identifier !!}</label>
                                     <div class="col-sm-10">
                                         <select name="{{'customField_'.$customField->id}}"
-                                                id="{{'customField_'.$customField->id}}"
+                                                ui-options="{theme: 'bootstrap'}" 
+                                                id="{{'customField_'.$customField->id}}" ui-jp="select2"
                                                 class="form-control c-select" {{$cf_required}}>
                                             <option value="">- - {!!  $cf_title !!} - -</option>
                                             <?php
@@ -638,8 +588,8 @@ if ($WebmasterSection->$title_var != "") {
                     @endforeach
                 @endif
                 {{--End of -- Additional Feilds--}}
-                @if($WebmasterSection->type ==0)
-                    <div class="form-group row">
+                @if($WebmasterSection->type ==0 && auth()->id() == 1)
+                    <div class="form-group row hide">
                         <label for="link_status"
                                class="col-sm-2 form-control-label">{!!  __('backend.pageCustomForm') !!}</label>
                         <div class="col-sm-10">
@@ -653,6 +603,58 @@ if ($WebmasterSection->$title_var != "") {
                         </div>
                     </div>
                 @endif
+
+                @if($WebmasterSection->photo_status)
+                    <div class="form-group row">
+                        <label for="photo_file"
+                               class="col-sm-2 form-control-label">{!!  __('backend.topicPhoto') !!}</label>
+                        <div class="col-sm-10">
+                            {!! Form::file('photo_file', array('class' => 'form-control','id'=>'photo_file','accept'=>'image/*')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                        <div class="offset-sm-2 col-sm-10">
+                            <small>
+                                <i class="material-icons">&#xe8fd;</i>
+                                {!!  __('backend.imagesTypes') !!}
+                            </small>
+                        </div>
+                    </div>
+                @endif
+
+                @if($WebmasterSection->icon_status)
+                    <div class="form-group row">
+                        <label for="icon"
+                               class="col-sm-2 form-control-label">{!!  __('backend.sectionIcon') !!}</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                {!! Form::text('icon','', array('placeholder' => '','class' => 'form-control icp icp-auto','id'=>'icon', 'data-placement'=>'bottomRight')) !!}
+                                <span class="input-group-addon"></span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if($WebmasterSection->attach_file_status)
+                    <div class="form-group row">
+                        <label for="attach_file"
+                               class="col-sm-2 form-control-label">{!!  __('backend.topicAttach') !!}</label>
+                        <div class="col-sm-10">
+                            {!! Form::file('attach_file', array('class' => 'form-control','id'=>'attach_file')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row m-t-md" style="margin-top: 0 !important;">
+                        <div class="offset-sm-2 col-sm-10">
+                            <small>
+                                <i class="material-icons">&#xe8fd;</i>
+                                {!!  __('backend.attachTypes') !!}
+                            </small>
+                        </div>
+                    </div>
+                @endif
+
+
+         
                 <div class="form-group row m-t-md">
                     <div class="offset-sm-2 col-sm-10">
                         <button type="submit" class="btn btn-primary m-t"><i class="material-icons">

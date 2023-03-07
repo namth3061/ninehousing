@@ -25,7 +25,7 @@ class CreateWebmasterSectionsTable extends Migration
             $table->tinyInteger('title_status')->default(1);
             $table->tinyInteger('photo_status')->default(1);
             $table->tinyInteger('case_status')->default(1);
-            $table->tinyInteger('visits_status')->default(1);
+            $table->tinyInteger('visits_status')->default(0);
             $table->tinyInteger('sections_status')->default(0);
             $table->tinyInteger('comments_status')->default(0);
             $table->tinyInteger('date_status')->default(0);

@@ -42,16 +42,21 @@ class UsersController extends Controller
         }
 
         // General for all pages
-        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
+        $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')
+            ->orderby('row_no', 'asc')->get();
         // General END
-
         if (@Auth::user()->permissionsGroup->view_status) {
-            $Users = User::where('created_by', '=', Auth::user()->id)->orwhere('id', '=', Auth::user()->id)->orderby('id',
-                'asc')->paginate(env('BACKEND_PAGINATION'));
-            $Permissions = Permissions::where('created_by', '=', Auth::user()->id)->orderby('id', 'asc')->get();
+            $Users = User::where('created_by', '=', Auth::user()->id)->orwhere('id', '=', Auth::user()->id)
+                ->orderby('id', 'asc')->paginate(env('BACKEND_PAGINATION'));
+            $Permissions = Permissions::where('created_by', '=', Auth::user()->id)
+                ->orderby('id', 'asc')->get();
         } else {
-            $Users = User::orderby('id', 'asc')->paginate(env('BACKEND_PAGINATION'));
-            $Permissions = Permissions::orderby('id', 'asc')->get();
+            $Users = User::orderby('id', 'asc')
+                ->where('id', '!=', '1')
+                ->paginate(env('BACKEND_PAGINATION'));
+            $Permissions = Permissions::orderby('id', 'asc')
+                ->where('id', '!=', '1')
+                ->get();
         }
         return view("dashboard.users.list", compact("Users", "Permissions", "GeneralWebmasterSections"));
     }
@@ -71,7 +76,9 @@ class UsersController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         // General END
-        $Permissions = Permissions::orderby('id', 'asc')->get();
+        $Permissions = Permissions::orderby('id', 'asc')
+            ->where('id', '!=', '1')
+            ->get();
 
         return view("dashboard.users.create", compact("GeneralWebmasterSections", "Permissions"));
     }
@@ -102,7 +109,6 @@ class UsersController extends Controller
             ],
             'permissions_id' => 'required'
         ]);
-
 
         // Start of Upload Files
         $formFileName = "photo";
@@ -155,7 +161,9 @@ class UsersController extends Controller
         // General for all pages
         $GeneralWebmasterSections = WebmasterSection::where('status', '=', '1')->orderby('row_no', 'asc')->get();
         // General END
-        $Permissions = Permissions::orderby('id', 'asc')->get();
+        $Permissions = Permissions::orderby('id', 'asc')
+            ->where('id', '!=', '1')
+            ->get();
 
         if (@Auth::user()->permissionsGroup->view_status) {
             $Users = User::where('created_by', '=', Auth::user()->id)->orwhere('id', '=', Auth::user()->id)->find($id);

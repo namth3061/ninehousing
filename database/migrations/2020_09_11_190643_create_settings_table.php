@@ -34,6 +34,8 @@ class CreateSettingsTable extends Migration
             $table->tinyInteger('notify_table_status')->nullable();
             $table->tinyInteger('notify_private_status')->nullable();
             $table->string('site_url')->nullable();
+            $table->string('google_map')->nullable();
+            $table->string('fb_page')->nullable();
             $table->tinyInteger('site_status');
             $table->text('close_msg')->nullable();
             $table->string('social_link1')->nullable();

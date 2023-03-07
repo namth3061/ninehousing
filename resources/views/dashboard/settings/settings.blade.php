@@ -43,7 +43,7 @@
                                         class="material-icons">&#xe41d;</i>
                                     &nbsp; {!!  __('backend.styleSettings') !!}</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item hide">
                                 <a class="nav-link block {{  ( Session::get('active_tab') == 'cssTab') ? 'active' : '' }}"
                                    href
                                    data-toggle="tab" data-target="#tab-7"

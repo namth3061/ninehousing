@@ -24,9 +24,9 @@ class CreateWebmasterSectionFieldsTable extends Migration
 
             $table->string('default_value')->nullable();
 
-            $table->text('details_jp')->nullable();
-            $table->text('details_en')->nullable();
-            $table->text('details_vi')->nullable();
+            $table->longText('details_jp')->nullable();
+            $table->longText('details_en')->nullable();
+            $table->longText('details_vi')->nullable();
 
             $table->integer('row_no');
             $table->tinyInteger('status');

@@ -28,8 +28,11 @@
 <script src="{{ asset('assets/dashboard/js/scripts/ui-screenfull.js') }}" defer></script>
 <script src="{{ asset('assets/dashboard/js/scripts/ui-scroll-to.js') }}" defer></script>
 <script src="{{ asset('assets/dashboard/js/scripts/ui-toggle-class.js') }}" defer></script>
+<script src="{{ URL::asset('assets/frontend/js/select2.min.js') }}"></script>
+<script src="{{ URL::asset('assets/frontend/js/moment.js') }}"></script>
+<script src="{{ URL::asset('assets/dashboard/js/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
-
+<script src="{{ asset('/assets/dashboard/js/dropzone/dist/min/dropzone.min.js') }}" defer></script>
 <script src="{{ asset('assets/dashboard/js/scripts/app.js') }}" defer></script>
 
 {!! Helper::SaveVisitorInfo("Dashboard &raquo; ".trim($__env->yieldContent('title'))) !!}

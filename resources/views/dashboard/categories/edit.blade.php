@@ -85,7 +85,7 @@ if ($WebmasterSection->$title_var != "") {
                                        class="col-sm-2 form-control-label">{!!  __('backend.categoryFather') !!} </label>
                                 <div class="col-sm-10">
                                     <select name="father_id" id="father_id" class="form-control c-select">
-                                        <option value="0">- - {!!  __('backend.categoryNoFather') !!} - -</option>
+                                        <!-- <option value="0">- - {!!  __('backend.categoryNoFather') !!} - -</option> -->
                                         <?php
                                         $title_var = "title_" . @Helper::currentLanguage()->code;
                                         $title_var2 = "title_" . env('DEFAULT_LANGUAGE');

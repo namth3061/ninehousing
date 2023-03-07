@@ -38,6 +38,21 @@ class Topic extends Model implements Feedable
         }
         return Topic::where("id", 0)->get();
     }
+    
+    public static function getTopicByIds($ids, $section_id, $paging = 0)
+    {
+        $topics = Topic::where([['webmaster_id', '=', $section_id], ['status', 1]]);
+
+        if (!empty($ids)) {
+            $topics = $topics->whereIn("id", $ids);
+        }
+
+        if ($paging) {
+            return $topics->orderBy("id", 'desc')->paginate($paging);
+        }
+
+        return $topics->get();
+    }
 
     //Relation to webmasterSections
     public function webmasterSection()

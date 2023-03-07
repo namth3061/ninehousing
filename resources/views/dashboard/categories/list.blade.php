@@ -129,7 +129,7 @@ if ($WebmasterSection->$title_var != "") {
                                             <i class="material-icons">&#xe3c9;</i>
                                         </a>
                                     @endif
-                                    @if(@Auth::user()->permissionsGroup->delete_status)
+                                    @if(@Auth::user()->permissionsGroup->delete_status && ($Section->father_id != 0 || $WebmasterSection->id != 5))
                                         <button class="btn btn-sm warning" type="button"
                                                 onclick="DeleteCategory('{{ $Section->id }}')" data-toggle="tooltip"
                                                 data-original-title="{{ __('backend.delete') }}">

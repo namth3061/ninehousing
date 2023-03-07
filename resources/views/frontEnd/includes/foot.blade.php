@@ -22,7 +22,7 @@
 <script src="{{ URL::asset('assets/frontend/js/i18n/defaults.min.js') }}"></script>
 <script src="{{ URL::asset('assets/frontend/js/select2.min.js') }}"></script>
 <script src="{{ URL::asset('assets/frontend/js/moment.js') }}"></script>
-<script src="{{ URL::asset('/assets/dashboard/js/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ URL::asset('assets/dashboard/js/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
 <script>
     $(".select2").select2();

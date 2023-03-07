@@ -17,9 +17,9 @@ class CreateBannersTable extends Migration
             $table->id();
             $table->integer('section_id');
 
-            $table->string('title_jp')->nullable();
-            $table->string('title_en')->nullable();
-            $table->string('title_vi')->nullable();
+            $table->text('title_jp')->nullable();
+            $table->text('title_en')->nullable();
+            $table->text('title_vi')->nullable();
 
             $table->text('details_jp')->nullable();
             $table->text('details_en')->nullable();

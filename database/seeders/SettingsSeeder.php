@@ -32,6 +32,8 @@ class SettingsSeeder extends Seeder
         $settings->notify_comments_status = "1";
         $settings->notify_orders_status = "1";
         $settings->site_url = "http://www.sitename.com/";
+        $settings->google_map = "http://www.sitename.com/";
+        $settings->fb_page = "http://www.sitename.com/";
         $settings->site_status = "1";
         $settings->close_msg = "Website under maintenance \n<h1>Comming SOON</h1>";
         $settings->social_link1 = "#";

@@ -29,6 +29,9 @@
                     </label>
                     <div class="col-sm-10">
                         {!! Form::text('name','', array('placeholder' => '','class' => 'form-control','id'=>'name','required'=>'')) !!}
+                        @error('name')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -38,6 +41,9 @@
                     </label>
                     <div class="col-sm-10">
                         {!! Form::email('email','', array('placeholder' => '','class' => 'form-control','id'=>'email','required'=>'')) !!}
+                        @error('email')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -47,6 +53,9 @@
                     </label>
                     <div class="col-sm-10">
                         {!! Form::text('password','', array('placeholder' => '','class' => 'form-control','id'=>'password','required'=>'')) !!}
+                        @error('password')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -73,7 +82,9 @@
                                 <option value="{{ $Permission->id  }}">{{ $Permission->name }}</option>
                             @endforeach
                         </select>
-
+                        @error('permissions_id')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 

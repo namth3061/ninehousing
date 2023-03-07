@@ -1,5 +1,5 @@
 
-<div class="tab-pane {{  ( Session::get('active_tab') == 'cssTab') ? 'active' : '' }}"
+<div class="tab-pane hide {{  ( Session::get('active_tab') == 'cssTab') ? 'active' : '' }}"
      id="tab-7">
     <div class="p-a-md"><h5><i class="material-icons">&#xe86f;</i>
             &nbsp; {!!  __('backend.customCSS') !!}</h5></div>

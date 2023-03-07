@@ -26,6 +26,9 @@ use Mail;
 
 class APIsController extends Controller
 {
+    protected $banner;
+    protected $topic;
+
     public function __construct()
     {
         // Check API Status
@@ -34,6 +37,9 @@ class APIsController extends Controller
             exit();
         }
         Helper::SaveVisitorInfo(url()->current());
+
+        $this->banner = new Banner();
+        $this->topic = new Topic();
     }
 
     /**
@@ -87,6 +93,214 @@ For more details check <a href='http://smartfordesign.net/smartend/documentation
 </html>
         ";
         exit();
+    }
+
+    public function home($lang) 
+    {
+        $sectionBannerIds = [1, 2, 3];
+        $allBanners = $this->banner->getBannersBySectionIds($sectionBannerIds);
+
+        // Get banners
+        $banners = $allBanners->where('section_id', $sectionBannerIds[0]);
+        $bannersDetails = $this->getListBannerBySection($banners, $lang);
+        $bannerResponse = [
+            'msg' => 'List of Banners',
+            'banners_count' => count($banners),
+            'banners' => !count($banners) ? [] : $bannersDetails,
+        ];
+        //End get Banners
+
+        // Get Under banners
+        $underBanners = $allBanners->where('section_id', $sectionBannerIds[1]);
+        $underBannersDetails = $this->getListBannerBySection($underBanners, $lang);
+        $underBannerResponse = [
+            'msg' => 'List of Under Banners',
+            'banners_count' => count($underBanners),
+            'banners' => !count($underBannersDetails) ? [] : $underBannersDetails,
+        ];
+        //End get Under Banners
+
+        // Get comment of Customer
+        $commentCustomers = $allBanners->where('section_id', $sectionBannerIds[2]);
+        $commentCustomersDetails = $this->getListBannerBySection($commentCustomers, $lang);
+        $commentCustomerResponse = [
+            'msg' => 'List of customer`s comment',
+            'banners_count' => count($commentCustomers),
+            'banners' => !count($commentCustomersDetails) ? [] : $commentCustomersDetails,
+        ];
+        //End Get comment of Customer
+
+
+        //Interactive map & why choose us
+
+        $topicIds = [5,6];
+        $topicForHomePage = $this->topic->getTopicByIds($topicIds, 1);
+        $topicsDetail = $this->getTopicDetail($topicForHomePage, $lang);
+        //End Interactive map & why choose us
+        
+
+        // Apartments
+
+        $apartments = $this->topic->getTopicByIds([], 5, 5);
+        $apartments = $this->getTopicDetail($apartments, $lang, true);
+
+        // End Apartmemts
+
+        // Activities
+
+        $activities = $this->topic->getTopicByIds([], 3, 5);
+        $activities = $this->getTopicDetail($activities, $lang, false, true);
+
+        // End Activities
+
+        // Partners
+        $partners = $this->topic->getTopicByIds([], 4, 10);
+        $partners = $this->getTopicDetail($partners, $lang, false, true);
+
+        // End Partners
+
+        //settings 
+        $setting = Setting::find(1);
+        $site = 'site_title_'.$lang;
+        $siteDesc = 'site_desc_'.$lang;
+        $siteKeyword = 'site_keywords_'.$lang;
+        $timeWork = 'contact_t7_'.$lang;
+        $address = 'contact_t1_'.$lang;
+        $logo = 'style_logo_'.$lang;
+        $customSetting = [
+            'site_title' => $setting->$site,
+            'site_desc' => $setting->$siteDesc,
+            'site_keyword' => $setting->$siteKeyword,
+            'site_webmails' => $setting->site_webmails,
+            'google_map' => $setting->google_map,
+            'fb_page' => $setting->fb_page,
+            'facebook' => $setting->social_link1,
+            'instagram' => $setting->social_link6,
+            'youtube' => $setting->social_link5,
+            'timework' => $setting->$timeWork,
+            'address' => $setting->$address,
+            'phone' => $setting->contact_t3,
+            'favicon' => empty($setting->style_fav) ? '' : url("") . "/uploads/settings/" . $setting->style_fav,
+            'logo' => empty($setting->$logo) ? '' : url("") . "/uploads/settings/" . $setting->$logo,
+        ];
+
+        //end settings
+
+        $response = [
+            'banner' => $bannerResponse,
+            'under_banner' => $underBannerResponse,
+            'comment' => $commentCustomerResponse,
+            'interactive_why_choose_us' => $topicsDetail,
+            'appartment' => $apartments,
+            'activity' => $activities,
+            'partners' => $partners,
+            'settings' => $customSetting,
+        ];
+
+
+        return response()->json($response, 200);
+        // } else {
+        //     // Empty MSG
+        //     $response = [
+        //         'msg' => 'There is no data'
+        //     ];
+        //     return response()->json($response, 200);
+        // }
+    }
+
+    public function getTopicDetail($topics, $lang, $getApartment = false, $getActivities = false) {
+        // By Language
+        $lang = $this->getLanguage($lang);
+        $title_var = "title_$lang";
+        $details_var = "details_$lang";
+        
+        if ($getActivities) {
+            $activities = [];
+            
+            foreach ($topics as $topic) {
+                $activities[] = [
+                    'id' => $topic->id,
+                    'status' => $topic->status,
+                    'title' => $topic->$title_var,
+                    'date' => date("M jS, Y", strtotime($topic->date)),
+                    'image' => empty($topic->photo_file) ? '' : '/uploads/topics/'.$topic->photo_file,
+                ];
+            }
+
+            return $activities;
+        }
+
+        if ($getApartment) {
+            $aparments = [];
+            $perDate = ['', 'Year', 'Month', 'Day'];
+            foreach ($topics as $topic) {
+                $fields = $topic->fields;
+
+                $address = !empty($fields) ? @$fields->where('field_id', 3)->first()->field_value : '';
+                $bedroom = !empty($fields) ? @$fields->where('field_id', 8)->first()->field_value : '';
+                $bathroom = !empty($fields) ? @$fields->where('field_id', 9)->first()->field_value : '';
+                $totalArea = !empty($fields) ? @$fields->where('field_id', 6)->first()->field_value : '';
+                $price = !empty($fields) ? @$fields->where('field_id', 4)->first()->field_value : '';
+                $per = !empty($fields) ? @$fields->where('field_id', 5)->first()->field_value : '';
+
+                $aparments[] = [
+                    'id' => $topic->id,
+                    'status' => $topic->status,
+                    'title' => $topic->$title_var,
+                    'address' => $address,
+                    'bedroom' => $bedroom,
+                    'bathroom' => $bathroom,
+                    'total_area' => $totalArea,
+                    'price' => number_format($price).'₫/'.$perDate[$per],
+                ];
+            }
+
+            return $aparments;
+        }
+
+        // Response Details
+        $response_details = [];
+        foreach ($topics as $topic) {
+            $map = '';
+            if (count($topic->maps)) {
+                $map = $topic->maps->toArray()[0];
+            }
+
+            $response_details[] = [
+                'id' => $topic->id,
+                'title' => $topic->$title_var,
+                'image' => empty($topic->photo_file) ? '' : '/uploads/topics/'.$topic->photo_file,
+                'map' => $map,
+                'details' => $topic->$details_var,
+            ];
+        }
+
+        return $response_details;
+    }
+    public function getListBannerBySection($Banners, $lang) {
+        // By Language
+        $lang = $this->getLanguage($lang);
+        $title_var = "title_$lang";
+        $details_var = "details_$lang";
+        $file_var = "file_$lang";
+
+        // Response Details
+        $response_details = [];
+
+        foreach ($Banners as $Banner) {
+            $response_details[] = [
+                'id' => $Banner->id,
+                'title' => $Banner->$title_var,
+                'details' => nl2br($Banner->$details_var),
+                'file' => ($Banner->$file_var != "") ? url("") . "/uploads/banners/" . $Banner->$file_var : null,
+                'video_type' => $Banner->video_type,
+                'youtube_link' => $Banner->youtube_link,
+                'link_url' => $Banner->link_url,
+                'icon' => $Banner->icon
+            ];
+        }
+
+        return $response_details;
     }
 
 

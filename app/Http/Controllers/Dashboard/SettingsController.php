@@ -109,6 +109,8 @@ class SettingsController extends Controller
             $Setting->notify_table_status = $request->notify_table_status;
             $Setting->notify_private_status = $request->notify_private_status;
             $Setting->site_url = $request->site_url;
+            $Setting->google_map = $request->google_map;
+            $Setting->fb_page = $request->fb_page;
 
 
             $formFileName2 = "style_fav";

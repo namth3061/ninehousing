@@ -26,6 +26,14 @@
             </div>
         @endforeach
         <div class="form-group">
+            <label>{!!  __('backend.googleMap') !!}</label>
+            {!! Form::text('google_map',$Setting->google_map, array('placeholder' => 'http//:www.sitename.com/','class' => 'form-control', 'dir'=>'ltr')) !!}
+        </div>
+        <div class="form-group">
+            <label>{!!  __('backend.facebookPage') !!}</label>
+            {!! Form::text('fb_page',$Setting->fb_page, array('placeholder' => 'http//:www.sitename.com/','class' => 'form-control', 'dir'=>'ltr')) !!}
+        </div>
+        <div class="form-group">
             <label>{!!  __('backend.websiteUrl') !!}</label>
             {!! Form::text('site_url',$Setting->site_url, array('placeholder' => 'http//:www.sitename.com/','class' => 'form-control', 'dir'=>'ltr')) !!}
         </div>

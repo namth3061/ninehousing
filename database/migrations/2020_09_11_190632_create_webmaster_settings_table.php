@@ -88,7 +88,7 @@ class CreateWebmasterSettingsTable extends Migration
             $table->string('login_bitbucket_client_secret');
 
             $table->tinyInteger('dashboard_link_status');
-            $table->tinyInteger('text_editor')->default(0);
+            $table->tinyInteger('text_editor')->default(2);
             $table->string('tiny_key')->nullable();
             $table->string('timezone');
             $table->string('version',20)->nullable();

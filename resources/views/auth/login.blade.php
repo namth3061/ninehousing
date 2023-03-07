@@ -8,7 +8,7 @@
                     <img alt="" class="app-logo"
                          src="{{ URL::to('uploads/settings/'.Helper::GeneralSiteSettings("style_logo_" . @Helper::currentLanguage()->code)) }}">
                 @else
-                    <img alt="" src="{{ URL::to('uploads/settings/nologo.png') }}">
+                    <img alt="" src="{{ asset('assets/dashboard/images/logo.png') }}" >
                 @endif
             </div>
             <div class="m-y text-muted text-center">
@@ -84,10 +84,10 @@
                     <i class="fa fa-user-plus"></i> {{ __('backend.createNewAccount') }}
                 </a>
             @endif
-            <div class="p-v-lg text-center">
+            <!-- <div class="p-v-lg text-center">
                 <div class="m-t"><a href="{{ url('/'.env('BACKEND_PATH').'/password/reset') }}"
                                     class="text-primary _600">{{ __('backend.forgotPassword') }}</a></div>
-            </div>
+            </div> -->
 
         </div>
 
