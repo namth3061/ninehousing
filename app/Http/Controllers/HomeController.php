@@ -174,6 +174,8 @@ class HomeController extends Controller
 
     public function HomePage()
     {
+        return redirect()->route("adminHome");
+
         return $this->HomePageByLang("");
     }
 
