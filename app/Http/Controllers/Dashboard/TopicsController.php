@@ -19,6 +19,7 @@ use Auth;
 use File;
 use Helper;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 use Redirect;
 use Form;
 use URL;
@@ -276,7 +277,7 @@ class TopicsController extends Controller
 
                 $photo = "";
                 if ($Topic->photo_file != "") {
-                    $photo = " <div class=\"pull-right\"><img src=\"" . asset('uploads/topics/' . $Topic->photo_file) . "\" style=\"height: 40px\" alt=\"" . $title . "\"></div>";
+                    $photo = " <div class=\"pull-right\"><img src=\"" . asset('uploads/topics/' . $Topic->photo_file) . "\" style=\"height: 85px\" alt=\"" . $title . "\"></div>";
                 }
                 $nestedData['check'] = "<div class='row_checker'><label class=\"ui-check m-a-0\">
                                                 <input type=\"checkbox\" name=\"ids[]\" value=\"" . $Topic->id . "\"><i
@@ -367,6 +368,8 @@ class TopicsController extends Controller
                                     $cf_data = Helper::dateForDB($cf_saved_val, 1);
                                 } elseif ($customField->type == 4) {
                                     $cf_data = Helper::dateForDB($cf_saved_val);
+                                }  elseif ($customField->type == 2) {
+                                    $cf_data = number_format($cf_saved_val);
                                 } else {
                                     $cf_data = $cf_saved_val;
                                 }
@@ -630,17 +633,17 @@ class TopicsController extends Controller
 
             $Topic->save();
 
-            if ($request->section_id != "" && $request->section_id != 0) {
-                // Save categories
-                foreach ($request->section_id as $category) {
-                    if ($category > 0) {
-                        $TopicCategory = new TopicCategory;
-                        $TopicCategory->topic_id = $Topic->id;
-                        $TopicCategory->section_id = $category;
-                        $TopicCategory->save();
+//                if ($request->section_id != "" && $request->section_id != 0) {
+                    // Save categories
+                    foreach ($datum['section_id'] as $category) {
+                        if ($category > 0) {
+                            $TopicCategory = new TopicCategory;
+                            $TopicCategory->topic_id = $Topic->id;
+                            $TopicCategory->section_id = $category;
+                            $TopicCategory->save();
+                        }
                     }
-                }
-            }
+//                }
 
             // Save additional Fields
             if (count($WebmasterSection->customFields) > 0) {
@@ -743,12 +746,11 @@ class TopicsController extends Controller
     public function update(Request $request, $webmasterId, $id)
     {
         $WebmasterSection = WebmasterSection::find($webmasterId);
+
         if (!empty($WebmasterSection)) {
             //
             $Topic = Topic::find($id);
             if (!empty($Topic)) {
-
-
                 $this->validate($request, [
                     'photo_file' => 'mimes:png,jpeg,jpg,gif,svg',
                     'audio_file' => 'mimes:mpga,wav,mp3', // mpga = mp3
@@ -1200,47 +1202,40 @@ class TopicsController extends Controller
     public function photos(Request $request, $webmasterId, $id)
     {
         $WebmasterSection = WebmasterSection::find($webmasterId);
-        if (!empty($WebmasterSection)) {
-            //
-            $this->validate($request, [
-                'file' => 'image',
-            ]);
-
-            $next_nor_no = Photo::where('topic_id', '=', $id)->max('row_no');
-            if ($next_nor_no < 1) {
-                $next_nor_no = 1;
-            } else {
-                $next_nor_no++;
-            }
-
-            // Start of Upload Files
-            $formFileName = "file";
-            $fileFinalName = "";
-            $fileFinalTitle = ""; // Original file name without extension
-            if ($request->$formFileName != "") {
-                $fileFinalTitle = basename($request->file($formFileName)->getClientOriginalName(),
-                    '.' . $request->file($formFileName)->getClientOriginalExtension());
-                $fileFinalName = time() . rand(1111,
-                        9999) . '.' . $request->file($formFileName)->getClientOriginalExtension();
-                $path = $this->uploadPath;
-                $request->file($formFileName)->move($path, $fileFinalName);
-            }
-            // End of Upload Files
-            if ($fileFinalName != "") {
-                $Photo = new Photo;
-                $Photo->row_no = $next_nor_no;
-                $Photo->file = $fileFinalName;
-                $Photo->title = $fileFinalTitle;
-                $Photo->topic_id = $id;
-                $Photo->created_by = Auth::user()->id;
-                $Photo->save();
-
-                return response()->json('success', 200);
-            } else {
-                return response()->json('error', 400);
-            }
-        } else {
+        if (empty($WebmasterSection)) {
             return redirect()->route('NotFound');
+        }
+
+        $validate = $this->validate($request, [
+            'file' => 'image',
+        ]);
+
+        $next_nor_no = Photo::where('topic_id', '=', $id)->max('row_no');
+
+        // Start of Upload Files
+        $formFileName = "file";
+        $fileFinalTitle = $request->file($formFileName)->getClientOriginalName(); // Original file name without extension
+        $checkExisted = file_exists(public_path() . '/' . $this->uploadPath . $fileFinalTitle);
+        if ($request->$formFileName != "" && !$checkExisted) {
+            $path = $this->uploadPath;
+            $request->file($formFileName)->move($path, $fileFinalTitle);
+        }
+
+        $Photo =new Photo;
+
+        if ($checkExisted) {
+            $Photo->row_no = $next_nor_no == 0 ? 1 : $next_nor_no++;
+            $Photo->file = $fileFinalTitle;
+            $Photo->title = $fileFinalTitle;
+            $Photo->topic_id = $id;
+            $Photo->created_by = Auth::user()->id;
+            $Photo->save();
+        }
+
+        if ($Photo) {
+            return response()->json('success', 200);
+        } else {
+            return response()->json('error', 400);
         }
     }
 

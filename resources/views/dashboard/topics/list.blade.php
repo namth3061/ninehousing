@@ -55,7 +55,8 @@ if ($WebmasterSection->$title_var != "") {
                         </button>
                     </li>
                     <li class="nav-item inline">
-                        <button type="button" class="btn success" id="excel_btn" title="Excel" onclick="print_as('excel')">
+                        <button type="button" class="btn success" id="excel_btn" title="Excel"
+                                onclick="print_as('excel')">
                             <i class="fa fa-file-excel-o"></i>
                         </button>
                     </li>
@@ -107,31 +108,31 @@ if ($WebmasterSection->$title_var != "") {
                                 @endif
                                 @foreach($WebmasterSection->customFields as $customField)
                                     @if($customField->in_search)
-                                        <?php
-                                        if ($customField->$cf_title_var != "") {
-                                            $cf_title = $customField->$cf_title_var;
-                                        } else {
-                                            $cf_title = $customField->$cf_title_var2;
-                                        }
+                                            <?php
+                                            if ($customField->$cf_title_var != "") {
+                                                $cf_title = $customField->$cf_title_var;
+                                            } else {
+                                                $cf_title = $customField->$cf_title_var2;
+                                            }
 
-                                        // check field language status
-                                        $cf_land_identifier = "";
-                                        $cf_land_active = false;
-                                        $cf_land_dir = @Helper::currentLanguage()->direction;
-                                        if ($customField->lang_code != "all") {
-                                            $ct_language = @Helper::LangFromCode($customField->lang_code);
-                                            $cf_land_identifier = @Helper::languageName($ct_language);
-                                            $cf_land_dir = $ct_language->direction;
-                                            if ($ct_language->box_status) {
+                                            // check field language status
+                                            $cf_land_identifier = "";
+                                            $cf_land_active = false;
+                                            $cf_land_dir = @Helper::currentLanguage()->direction;
+                                            if ($customField->lang_code != "all") {
+                                                $ct_language = @Helper::LangFromCode($customField->lang_code);
+                                                $cf_land_identifier = @Helper::languageName($ct_language);
+                                                $cf_land_dir = $ct_language->direction;
+                                                if ($ct_language->box_status) {
+                                                    $cf_land_active = true;
+                                                }
+                                            }
+                                            if ($customField->lang_code == "all") {
                                                 $cf_land_active = true;
                                             }
-                                        }
-                                        if ($customField->lang_code == "all") {
-                                            $cf_land_active = true;
-                                        }
-                                        // required Status
-                                        $cf_required = "";
-                                        ?>
+                                            // required Status
+                                            $cf_required = "";
+                                            ?>
                                         @if($cf_land_active)
                                             @if($customField->type ==12)
 
@@ -149,23 +150,23 @@ if ($WebmasterSection->$title_var != "") {
                                                             id="{{'customField_'.$customField->id}}"
                                                             class="form-control c-select" {{$cf_required}}>
                                                         <option value="">- - {!!  $cf_title !!} - -</option>
-                                                        <?php
-                                                        $cf_details_var = "details_" . @Helper::currentLanguage()->code;
-                                                        $cf_details_var2 = "details_en" . env('DEFAULT_LANGUAGE');
-                                                        if ($customField->$cf_details_var != "") {
-                                                            $cf_details = $customField->$cf_details_var;
-                                                        } else {
-                                                            $cf_details = $customField->$cf_details_var2;
-                                                        }
-                                                        $cf_details_lines = preg_split('/\r\n|[\r\n]/', $cf_details);
-                                                        $line_num = 1;
-                                                        ?>
+                                                            <?php
+                                                            $cf_details_var = "details_" . @Helper::currentLanguage()->code;
+                                                            $cf_details_var2 = "details_en" . env('DEFAULT_LANGUAGE');
+                                                            if ($customField->$cf_details_var != "") {
+                                                                $cf_details = $customField->$cf_details_var;
+                                                            } else {
+                                                                $cf_details = $customField->$cf_details_var2;
+                                                            }
+                                                            $cf_details_lines = preg_split('/\r\n|[\r\n]/', $cf_details);
+                                                            $line_num = 1;
+                                                            ?>
                                                         @foreach ($cf_details_lines as $cf_details_line)
                                                             <option
                                                                 value="{{ $line_num  }}" {{ (@$_GET['customField_'.$customField->id] == $line_num) ? "selected='selected'":""  }}>{{ $cf_details_line }}</option>
-                                                            <?php
-                                                            $line_num++;
-                                                            ?>
+                                                                <?php
+                                                                $line_num++;
+                                                                ?>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -234,7 +235,7 @@ if ($WebmasterSection->$title_var != "") {
                             </th>
                         @endif
                         @if($WebmasterSection->title_status)
-                            <th>{{ __('backend.topicName') }}</th>
+                            <th style="width: 20%">{{ __('backend.topicName') }}</th>
                         @endif
                         @if($WebmasterSection->date_status)
                             <th style="width:100px;">{{ __('backend.topicDate') }}</th>
@@ -249,30 +250,30 @@ if ($WebmasterSection->$title_var != "") {
                             <th style="width:80px;">{{ __('backend.status') }}</th>
                         @endif
                         @foreach($WebmasterSection->customFields as $customField)
-                            <?php
-                            // check permission
-                            $view_permission_groups = [];
-                            if ($customField->view_permission_groups != "") {
-                                $view_permission_groups = explode(",", $customField->view_permission_groups);
-                            }
+                                <?php
+                                // check permission
+                                $view_permission_groups = [];
+                                if ($customField->view_permission_groups != "") {
+                                    $view_permission_groups = explode(",", $customField->view_permission_groups);
+                                }
                             if (in_array(Auth::user()->permissions_id, $view_permission_groups) || in_array(0, $view_permission_groups) || $customField->view_permission_groups == "") {
-                            // have permission & continue
-                            ?>
+                                // have permission & continue
+                                ?>
                             @if($customField->in_table)
                                 @if ($customField->lang_code == "all" || $customField->lang_code == @Helper::currentLanguage()->code)
-                                    <?php
-                                    if ($customField->$cf_title_var != "") {
-                                        $cf_title = $customField->$cf_title_var;
-                                    } else {
-                                        $cf_title = $customField->$cf_title_var2;
-                                    }
-                                    ?>
+                                        <?php
+                                        if ($customField->$cf_title_var != "") {
+                                            $cf_title = $customField->$cf_title_var;
+                                        } else {
+                                            $cf_title = $customField->$cf_title_var2;
+                                        }
+                                        ?>
                                     <th class="text-center">{{ $cf_title }}</th>
                                 @endif
                             @endif
-                            <?php
+                                <?php
                             }
-                            ?>
+                                ?>
                         @endforeach
                         <th class="text-center" style="max-width:150px;">{{ __('backend.options') }}</th>
                         </thead>
@@ -334,20 +335,20 @@ if ($WebmasterSection->$title_var != "") {
         @foreach($WebmasterSection->customFields as $customField)
             @if($customField->in_statics && ($customField->type==6 || $customField->type==7))
                 <div class="box">
-                    <?php
-                    $cf_details_var = "details_" . @Helper::currentLanguage()->code;
-                    $cf_details_var2 = "details_en" . env('DEFAULT_LANGUAGE');
-                    if ($customField->$cf_details_var != "") {
-                        $cf_details = $customField->$cf_details_var;
-                    } else {
-                        $cf_details = $customField->$cf_details_var2;
-                    }
-                    $cf_details_lines = preg_split('/\r\n|[\r\n]/', $cf_details);
-                    $heigth = count($cf_details_lines) * 12;
-                    if ($heigth < 200) {
-                        $heigth = 200;
-                    }
-                    ?>
+                        <?php
+                        $cf_details_var = "details_" . @Helper::currentLanguage()->code;
+                        $cf_details_var2 = "details_en" . env('DEFAULT_LANGUAGE');
+                        if ($customField->$cf_details_var != "") {
+                            $cf_details = $customField->$cf_details_var;
+                        } else {
+                            $cf_details = $customField->$cf_details_var2;
+                        }
+                        $cf_details_lines = preg_split('/\r\n|[\r\n]/', $cf_details);
+                        $heigth = count($cf_details_lines) * 12;
+                        if ($heigth < 200) {
+                            $heigth = 200;
+                        }
+                        ?>
                     <div id="canvas-holder-{{ $customField->id }}"
                          style="overflow: auto;padding: 20px;border-bottom: 1px solid #ddd;">
                         <h6 class="text-muted">{!! $customField->$title_var !!}</h6>
@@ -383,7 +384,6 @@ if ($WebmasterSection->$title_var != "") {
 @endsection
 @push("after-scripts")
 
-
     <script src="{{ URL::asset('assets/frontend/js/Chart.min.js') }}"></script>
     <script>
         var dynamicColors = function () {
@@ -400,54 +400,54 @@ if ($WebmasterSection->$title_var != "") {
         window.onload = function () {
             @foreach($WebmasterSection->customFields as $customField)
             @if($customField->in_statics && ($customField->type==6 || $customField->type==7))
-            <?php
-            $cf_details_var = "details_" . @Helper::currentLanguage()->code;
-            $cf_details_var2 = "details_en" . env('DEFAULT_LANGUAGE');
-            if ($customField->$cf_details_var != "") {
-                $cf_details = $customField->$cf_details_var;
-            } else {
-                $cf_details = $customField->$cf_details_var2;
-            }
-            $cf_details_lines = preg_split('/\r\n|[\r\n]/', $cf_details);
-            ?>
+                <?php
+                $cf_details_var = "details_" . @Helper::currentLanguage()->code;
+                $cf_details_var2 = "details_en" . env('DEFAULT_LANGUAGE');
+                if ($customField->$cf_details_var != "") {
+                    $cf_details = $customField->$cf_details_var;
+                } else {
+                    $cf_details = $customField->$cf_details_var2;
+                }
+                $cf_details_lines = preg_split('/\r\n|[\r\n]/', $cf_details);
+                ?>
             new Chart(document.getElementById('chart-area-{{ $customField->id }}').getContext('2d'), {
                 type: 'pie',
                 data: {
                     datasets: [{
                         data: [
-                            <?php
+                                <?php
                                 $line_num = 1;
                                 ?>
                                 @foreach ($cf_details_lines as $cf_details_line)
                                 {{ (@$statics[$customField->id][$line_num] !="")?@$statics[$customField->id][$line_num]:0 }},
-                            <?php
-                            $line_num++;
-                            ?>
+                                <?php
+                                $line_num++;
+                                ?>
                             @endforeach
                         ],
                         backgroundColor: [
-                            <?php
-                            $line_num = 1;
-                            ?>
+                                <?php
+                                $line_num = 1;
+                                ?>
                             @foreach ($cf_details_lines as $cf_details_line)
 
                             dynamicColors(),
-                            <?php
-                            $line_num++;
-                            ?>
+                                <?php
+                                $line_num++;
+                                ?>
                             @endforeach
                         ],
                         label: 'Dataset 1'
                     }],
                     labels: [
-                        <?php
+                            <?php
                             $line_num = 1;
                             ?>
                             @foreach ($cf_details_lines as $cf_details_line)
                         ('{{ $cf_details_line }}').substring(0, 40) + ((('{{ $cf_details_line }}').length > 40) ? '..' : '') + " ( " + '{{ (@$statics[$customField->id][$line_num] !="")?@$statics[$customField->id][$line_num]:0 }}' + ' )',
-                        <?php
-                        $line_num++;
-                        ?>
+                            <?php
+                            $line_num++;
+                            ?>
                         @endforeach
                     ]
                 },
@@ -565,15 +565,15 @@ if ($WebmasterSection->$title_var != "") {
                     },
                         @endif
                         @foreach($WebmasterSection->customFields as $customField)
-                        <?php
-                        // check permission
-                        $view_permission_groups = [];
-                        if ($customField->view_permission_groups != "") {
-                            $view_permission_groups = explode(",", $customField->view_permission_groups);
-                        }
+                            <?php
+                            // check permission
+                            $view_permission_groups = [];
+                            if ($customField->view_permission_groups != "") {
+                                $view_permission_groups = explode(",", $customField->view_permission_groups);
+                            }
                         if (in_array(Auth::user()->permissions_id, $view_permission_groups) || in_array(0, $view_permission_groups) || $customField->view_permission_groups == "") {
-                        // have permission & continue
-                        ?>
+                            // have permission & continue
+                            ?>
                         @if($customField->in_table)
                         @if ($customField->lang_code == "all" || $customField->lang_code == @Helper::currentLanguage()->code)
                     {
@@ -584,9 +584,9 @@ if ($WebmasterSection->$title_var != "") {
                     },
                         @endif
                         @endif
-                        <?php
+                            <?php
                         }
-                        ?>
+                            ?>
                         @endforeach
                     {
                         "data": "options", "orderable": false
@@ -639,7 +639,8 @@ if ($WebmasterSection->$title_var != "") {
                 });
             }
         });
-        function print_as(stat){
+
+        function print_as(stat) {
             $("#search_submit_stat").val(stat);
             $("#filter_form").attr('action', '{{ route("topicsPrint",$WebmasterSection->id) }}');
             $("#filter_form").attr('target', '_blank');

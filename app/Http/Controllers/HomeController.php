@@ -174,7 +174,7 @@ class HomeController extends Controller
 
     public function HomePage()
     {
-        return redirect()->route("adminHome");
+        return redirect()->route('adminHome');
 
         return $this->HomePageByLang("");
     }
@@ -271,7 +271,7 @@ class HomeController extends Controller
 
 
         // get Webmaster section settings by name
-        $Current_Slug = "seo_url_slug_" . @Helper::currentLanguage()->code;
+        $Current_Slug = "seo_url_slug_" . @App\Helpers\Helper::currentLanguage()->code;
         $Default_Slug = "seo_url_slug_" . env('DEFAULT_LANGUAGE');
         $WebmasterSection = WebmasterSection::where($Current_Slug, $section)->orwhere($Default_Slug, $section)->first();
         if (empty($WebmasterSection) && is_numeric($section)) {

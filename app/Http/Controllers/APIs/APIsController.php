@@ -8,6 +8,7 @@ use App\Models\AttachFile;
 use App\Models\Banner;
 use App\Models\Comment;
 use App\Models\Contact;
+use App\Models\TopicField;
 use App\Models\Language;
 use App\Models\Map;
 use App\Models\Menu;
@@ -95,8 +96,14 @@ For more details check <a href='http://smartfordesign.net/smartend/documentation
         exit();
     }
 
+    //http://127.0.0.1:8000/api/v1/home/jp
+    //http://127.0.0.1:8000/api/v1/products/vi?page=1&name=VENITY+Sky&sortby=
+    //http://127.0.0.1:8000/api/v1/product_detail/8/vi
+    //http://127.0.0.1:8000/api/v1/blogs/vi?page=1&name=VENITY+Sky&sortby=
+
     public function home($lang) 
     {
+        //http://127.0.0.1:8000/api/v1/home/jp
         $sectionBannerIds = [1, 2, 3];
         $allBanners = $this->banner->getBannersBySectionIds($sectionBannerIds);
 
@@ -208,7 +215,7 @@ For more details check <a href='http://smartfordesign.net/smartend/documentation
         // }
     }
 
-    public function getTopicDetail($topics, $lang, $getApartment = false, $getActivities = false) {
+    public function getTopicDetail($topics, $lang, $getApartment = false, $getActivities = false, $getBlogs = false) {
         // By Language
         $lang = $this->getLanguage($lang);
         $title_var = "title_$lang";
@@ -251,11 +258,28 @@ For more details check <a href='http://smartfordesign.net/smartend/documentation
                     'bedroom' => $bedroom,
                     'bathroom' => $bathroom,
                     'total_area' => $totalArea,
-                    'price' => number_format($price).'₫/'.$perDate[$per],
+                    'price' => number_format($price).'₫/'.@$perDate[$per],
                 ];
             }
 
             return $aparments;
+        }
+
+        if ($getBlogs) {
+            $blogs = [];
+            foreach ($topics as $topic) {
+                $fields = $topic->fields;
+
+                $blogs[] = [
+                    'id' => $topic->id,
+                    'status' => $topic->status,
+                    'title' => $topic->$title_var,
+                    'detail' => substr(strip_tags($topic->$details_var),0,300).'...',
+                    'date' => date('d/m/Y H:i:s', strtotime($topic->created_at)),
+                ];
+            }
+
+            return $blogs;
         }
 
         // Response Details
@@ -277,6 +301,7 @@ For more details check <a href='http://smartfordesign.net/smartend/documentation
 
         return $response_details;
     }
+
     public function getListBannerBySection($Banners, $lang) {
         // By Language
         $lang = $this->getLanguage($lang);
@@ -303,6 +328,106 @@ For more details check <a href='http://smartfordesign.net/smartend/documentation
         return $response_details;
     }
 
+    public function products(Request $request, $lang) {
+        //http://127.0.0.1:8000/api/v1/products/vi?page=1&name=VENITY+Sky&sortby=
+        $topicForHomePage = $this->topic->getTopicByIds([], 5, $request->all(), 10);
+        $topicsDetail = $this->getTopicDetail($topicForHomePage, $lang, true);
+        
+        return response()->json($topicsDetail, 200);
+    }
+
+    public function productDetail(Request $request, $id, $lang) {
+        //http://127.0.0.1:8000/api/v1/product_detail/8/vi
+        $topicForHomePage = $this->topic->getTopicByIds([$id], 5, $request->all());
+        $product = $topicForHomePage->first();
+
+        $lang = $this->getLanguage($lang);
+        $title_var = "title_$lang";
+        $details_var = "details_$lang";
+
+        $perDate = ['', 'Year', 'Month', 'Day'];
+           
+        $fields = $product->fields;
+        // dd($product->photos);
+        $photos = [];
+        foreach ($product->photos as $photo) {
+            $photos[] = asset('uploads/topics/'.$photo->file);
+        }
+
+        $address = !empty($fields) ? @$fields->where('field_id', 3)->first()->field_value : '';
+        $bedroom = !empty($fields) ? @$fields->where('field_id', 8)->first()->field_value : '';
+        $bathroom = !empty($fields) ? @$fields->where('field_id', 9)->first()->field_value : '';
+        $totalArea = !empty($fields) ? @$fields->where('field_id', 6)->first()->field_value : '';
+        $price = !empty($fields) ? @$fields->where('field_id', 4)->first()->field_value : '';
+        $per = !empty($fields) ? @$fields->where('field_id', 5)->first()->field_value : '';
+        $district = !empty($fields) ? @$fields->where('field_id', 2)->first()->field_value : '';
+
+        $productsIdNearly = TopicField::where('field_value', $district)->where('topic_id','<>', $id)->pluck('topic_id')->toArray();
+        $topicForHomePage = $this->topic->getTopicByIds($productsIdNearly, 5, ['page' => 1], 5);
+        $topicsDetail = $this->getTopicDetail($topicForHomePage, $lang, true);
+
+        $response_details = [
+            'detail' => [
+                'id' => $product->id,
+                'title' => $product->$title_var,
+                'detail' => $product->$details_var,
+                'price' => number_format($price).'₫/'.@$perDate[$per],
+                'address' => $address,
+                'bedroom' => $bedroom,
+                'bathroom' => $bathroom,
+                'total_area' => $totalArea,
+                'photos' => $photos,
+                'amenities' => $product->categorySection->where('father_id', 2)->pluck($title_var)->toArray(),
+                'outdoor_facilities' => $product->categorySection->where('father_id', 3)->pluck($title_var)->toArray(),
+            ],
+            'nearly' => $topicsDetail,
+        ];
+
+        return response()->json($response_details, 200);
+    }
+
+    public function blogs(Request $request, $lang) {
+        //http://127.0.0.1:8000/api/v1/blogs/vi?page=1&name=VENITY+Sky&sortby=
+        $topicForHomePage = $this->topic->getTopicByIds([], 2, $request->all(), 10);
+        $topicsDetail = $this->getTopicDetail($topicForHomePage, $lang, false, false, true);
+        
+        return response()->json($topicsDetail, 200);
+    }
+
+    public function blogDetail(Request $request, $id, $lang) {
+        //http://127.0.0.1:8000/api/v1/blog_detail/42/vi
+        $topicForHomePage = $this->topic->getTopicByIds([$id], 2, $request->all());
+        $blog = $topicForHomePage->first();
+
+        $lang = $this->getLanguage($lang);
+        $title_var = "title_$lang";
+        $details_var = "details_$lang";
+   
+        $categories = $blog->categorySection;
+        $nearly = collect();
+        foreach ($categories as $category) {
+            $nearly->push($category->allTopics->where('id', '!=', $id));
+        }
+
+        $topicsRelated = $this->getTopicDetail($nearly->flatten(1), $lang, false, false, true);
+
+        $response_details = [
+            'detail' => [
+                'id' => $blog->id,
+                'title' => $blog->$title_var,
+                'detail' => $blog->$details_var,
+                'date' => date('d/m/Y H:i:s', strtotime($blog->created_at)),
+            ],
+            'nearly' => $topicsRelated,
+        ];
+  
+        return response()->json($response_details, 200);
+    }
+
+    public function aboutUs()
+    {
+        # code...
+    }
 
     /**
      * Display a listing of the resource.

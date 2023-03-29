@@ -3,7 +3,7 @@
     <script>
         CKEDITOR.editorConfig = function (config) {
             config.language = '{{ @Helper::currentLanguage()->code }}';
-            config.height = 500;
+            config.height = 250;
             config.uiColor = '#ffffff';
             config.toolbarCanCollapse = true;
             config.filebrowserImageBrowseUrl = '/file-manager/ckeditor';

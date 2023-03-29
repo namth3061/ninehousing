@@ -447,7 +447,7 @@ if ($WebmasterSection->$title_var != "") {
                                         {!! $cf_land_identifier !!}</label>
                                     <div class="col-sm-10">
                                         <select name="{{'customField_'.$customField->id}}"
-                                                ui-options="{theme: 'bootstrap'}" 
+                                                ui-options="{theme: 'bootstrap'}"
                                                 id="{{'customField_'.$customField->id}}" ui-jp="select2"
                                                 class="form-control c-select" {{$cf_required}}>
                                             <option value="">- - {!!  $cf_title !!} - -</option>
@@ -654,7 +654,7 @@ if ($WebmasterSection->$title_var != "") {
                 @endif
 
 
-         
+
                 <div class="form-group row m-t-md">
                     <div class="offset-sm-2 col-sm-10">
                         <button type="submit" class="btn btn-primary m-t"><i class="material-icons">

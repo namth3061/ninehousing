@@ -3,6 +3,11 @@
 Route::get('/', 'APIsController@api')->name('apiURL');
 
 Route::get('/home/{lang?}', 'APIsController@home')->name('home_page');
+Route::get('/products/{lang?}', 'APIsController@products')->name('products');
+Route::get('/product_detail/{id}/{lang?}', 'APIsController@productDetail')->name('product_detail');
+Route::get('/blogs/{lang?}', 'APIsController@blogs')->name('blogs');
+Route::get('/blog_detail/{id}/{lang?}', 'APIsController@blogDetail')->name('blog_detail');
+Route::get('/about_us/{lang?}', 'APIsController@aboutUs')->name('about_us');
 // general
 Route::get('/website/status', 'APIsController@website_status');
 Route::get('/website/info/{lang?}', 'APIsController@website_info');
