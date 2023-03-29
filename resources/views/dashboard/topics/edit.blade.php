@@ -642,6 +642,8 @@ if ($WebmasterSection->$title_var != "") {
                                             <div class="col-sm-10">
                                                 <select name="{{'customField_'.$customField->id}}"
                                                         id="{{'customField_'.$customField->id}}"
+                                                        ui-jp="select2"
+                                                        ui-options="{theme: 'bootstrap'}" 
                                                         class="form-control c-select" {{$cf_required}}>
                                                     <option value="">- - {!!  $cf_title !!} - -</option>
                                                     <?php

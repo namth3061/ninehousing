@@ -39,7 +39,7 @@ class Topic extends Model implements Feedable
         return Topic::where("id", 0)->get();
     }
     
-    public static function getTopicByIds($ids, $section_id, $paging = 0)
+    public static function getTopicByIds($ids, $section_id, $input = [], $paging = 0)
     {
         $topics = Topic::where([['webmaster_id', '=', $section_id], ['status', 1]]);
 
@@ -47,8 +47,18 @@ class Topic extends Model implements Feedable
             $topics = $topics->whereIn("id", $ids);
         }
 
+        if (isset($input['name'])) {
+            $topics = $topics->where(function($query) use($input){
+                $searchTerm = $input['name'];
+                $query->where('title_vi', 'LIKE', "%{$searchTerm}%") 
+                ->orWhere('title_jp', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('title_en', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
         if ($paging) {
-            return $topics->orderBy("id", 'desc')->paginate($paging);
+            return $topics->orderBy("id", 'desc')
+            ->paginate($paging, ['*'], 'page', $input['page']);
         }
 
         return $topics->get();
@@ -70,6 +80,11 @@ class Topic extends Model implements Feedable
     public function categories()
     {
         return $this->hasMany('App\Models\TopicCategory');
+    }
+
+    public function categorySection()
+    {
+        return $this->belongsToMany('App\Models\Section','topic_categories', 'topic_id','section_id');
     }
 
     //Relation to Users

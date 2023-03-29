@@ -743,12 +743,11 @@ class TopicsController extends Controller
     public function update(Request $request, $webmasterId, $id)
     {
         $WebmasterSection = WebmasterSection::find($webmasterId);
+
         if (!empty($WebmasterSection)) {
             //
             $Topic = Topic::find($id);
             if (!empty($Topic)) {
-
-
                 $this->validate($request, [
                     'photo_file' => 'mimes:png,jpeg,jpg,gif,svg',
                     'audio_file' => 'mimes:mpga,wav,mp3', // mpga = mp3

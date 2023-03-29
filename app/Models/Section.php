@@ -33,10 +33,14 @@ class Section extends Model
     //Relation to Topics
     public function topics()
     {
-
         return $this->hasMany('App\Models\Topic')->orderby('row_no', 'asc');
     }
 
+    public function allTopics()
+    {
+        return $this->belongsToMany('App\Models\Topic','topic_categories', 'section_id', 'topic_id');
+    }
+    
     //Relation of TopicCategory
     public function selectedCategories()
     {
