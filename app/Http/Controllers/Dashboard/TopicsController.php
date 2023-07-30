@@ -394,10 +394,10 @@ class TopicsController extends Controller
                 }
                 $edit_btn = "";
 
-                $edit_btn .= "<a class=\"btn btn-sm info\"
-                                           href=\"" . ((@$Topic->webmasterSection->type == 4 || @$Topic->webmasterSection->type == 6) ? route("topicView", ["webmasterId" => @$Topic->webmasterSection->id, "id" => $Topic->id]) : Helper::topicURL($Topic->id)) . "\"  data-toggle=\"tooltip\" data-original-title=\" " . __('backend.preview') . "\"" . ((@$Topic->webmasterSection->type == 4 || @$Topic->webmasterSection->type == 6) ? "" : "target='_blank'") . ">
-                                            <i class=\"material-icons\">&#xe8f4;</i>
-                                        </a>";
+                // $edit_btn .= "<a class=\"btn btn-sm info\"
+                //                            href=\"" . ((@$Topic->webmasterSection->type == 4 || @$Topic->webmasterSection->type == 6) ? route("topicView", ["webmasterId" => @$Topic->webmasterSection->id, "id" => $Topic->id]) : Helper::topicURL($Topic->id)) . "\"  data-toggle=\"tooltip\" data-original-title=\" " . __('backend.preview') . "\"" . ((@$Topic->webmasterSection->type == 4 || @$Topic->webmasterSection->type == 6) ? "" : "target='_blank'") . ">
+                //                             <i class=\"material-icons\">&#xe8f4;</i>
+                //                         </a>";
 
                 if (@Auth::user()->permissionsGroup->edit_status) {
                     $edit_btn .= " <a class=\"btn btn-sm success\"
