@@ -28,7 +28,7 @@
                                         class="dark-white"></i>
                                     {!! Form::hidden('row_ids[]',$photo->id, array('class' => 'form-control row_no')) !!}
                                 </label>
-                                <img src="{{ asset('uploads/topics/'.$photo->file) }}"
+                                <img src="{{ asset('/uploads/topics/'.$photo->file) }}"
                                      alt="{{ $photo->title  }}" title="{{ $photo->title  }}"
                                      style="height: 150px"
                                      class="img-responsive">

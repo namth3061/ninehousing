@@ -632,10 +632,8 @@ class TopicsController extends Controller
             $Topic->status = (@Auth::user()->permissionsGroup->active_status) ? 1 : 0;
 
             $Topic->save();
-
-//                if ($request->section_id != "" && $request->section_id != 0) {
-                    // Save categories
-                    foreach ($datum['section_id'] as $category) {
+            if ($request->section_id != "" && $request->section_id != 0) {
+                    foreach ($request->section_id as $category) {
                         if ($category > 0) {
                             $TopicCategory = new TopicCategory;
                             $TopicCategory->topic_id = $Topic->id;
@@ -643,7 +641,7 @@ class TopicsController extends Controller
                             $TopicCategory->save();
                         }
                     }
-//                }
+                }
 
             // Save additional Fields
             if (count($WebmasterSection->customFields) > 0) {
@@ -1215,7 +1213,7 @@ class TopicsController extends Controller
         // Start of Upload Files
         $formFileName = "file";
         $fileFinalTitle = $request->file($formFileName)->getClientOriginalName(); // Original file name without extension
-        $checkExisted = file_exists(public_path() . '/' . $this->uploadPath . $fileFinalTitle);
+        $checkExisted = file_exists('/' . $this->uploadPath . $fileFinalTitle);
         if ($request->$formFileName != "" && !$checkExisted) {
             $path = $this->uploadPath;
             $request->file($formFileName)->move($path, $fileFinalTitle);
