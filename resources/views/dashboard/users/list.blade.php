@@ -16,7 +16,7 @@
             </div>
 
             @if($Users->total() >0)
-                @if(@Auth::user()->permissionsGroup->webmaster_status)
+                @if(@Auth::user()->permissionsGroup->settings_status)
                     <div class="row p-a pull-right" style="margin-top: -70px;">
                         <div class="col-sm-12">
                             <a class="btn btn-fw primary" href="{{route("usersCreate")}}">
